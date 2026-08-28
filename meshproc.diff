@@ -1,0 +1,24 @@
+--- meshproc.cxx	2010-11-07 08:18:35.000000000 -0800
++++ ../../Showmesh.2/meshproc.cxx	2010-12-03 10:33:52.000000000 -0800
+@@ -883,13 +883,19 @@
+ 	}
+ 
+ 	for (unsigned int e = 0; e < ne; e++) {
+-		if (elemnodes[e].size() == 3) {
++		nodeset_t &nl = elemnodes[e];
++
++		if (nl.size() == 0) {
+ 			faces.push_back(m_mesh->getElemInd(e, 0));
+ 			faces.push_back(m_mesh->getElemInd(e, 1));
+ 			faces.push_back(m_mesh->getElemInd(e, 2));
+ 		} else {
++			nl.insert(m_mesh->getElemInd(e, 0));
++			nl.insert(m_mesh->getElemInd(e, 1));
++			nl.insert(m_mesh->getElemInd(e, 2));
++
+ 			printf("Triangulating element %d\n", e);
+-			triangulateElement(e, faces, elemnodes[e]);
++			triangulateElement(e, faces, nl);
+ 		}
+ 	}
+ 
